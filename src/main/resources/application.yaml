@@ -1,0 +1,44 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:exchange
+    username: sa
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+
+resilience4j:
+  ratelimiter:
+    instances:
+      basic:
+        limit-for-period: 10
+        limit-refresh-period: 1m
+        timeout-duration: 10s
+
+exchange-api:
+  api-url: https://api.apilayer.com/exchangerates_data/
+  api-key: ${EXCHANGE_API_API_KEY:default-key}
+  api-call-limit: 60
+  cache-name: exchanges
+  cache-ttl: 10000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    metrics:
+      enabled: true
+
+
+
